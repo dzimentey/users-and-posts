@@ -64,6 +64,7 @@ function App() {
             <div className={'mainBlock'}>
 
                 <div className={'postsBlock'}>
+                    {users.length === 0 && <LinearProgress color={'secondary'}/>}
                     {
                         users.some(u => u.isChecked)
                             ?
