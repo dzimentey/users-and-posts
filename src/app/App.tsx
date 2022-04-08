@@ -7,6 +7,8 @@ import {getAllPostsTC, PostsType} from "./state/all-posts-reducer";
 import {getFilteredPostsTC, removePostsAC} from "./state/filtered-posts-reducer";
 import {CommentsType, getCommentsTC} from "./state/coments-reducer";
 import {debounce} from "@mui/material";
+import LinearProgress from '@mui/material/LinearProgress';
+
 
 
 function App() {
@@ -106,6 +108,7 @@ function App() {
                 <div className={'selectBlock'}>
                     <div className={'selectTitle'}>Select users to view their posts</div>
                     <div className={'selectBody'}>
+                        {users.length === 0 && <LinearProgress color={'secondary'}/>}
                         {users.map(u => {
                             const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
                                 let newIsChecked = e.currentTarget.checked
