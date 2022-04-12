@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useEffect} from 'react'
+import React, {ChangeEvent, useCallback, useEffect} from 'react'
 import './App.css'
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "./state/store";
@@ -8,7 +8,6 @@ import {getFilteredPostsTC, removePostsAC} from "./state/filtered-posts-reducer"
 import {CommentsType, getCommentsTC} from "./state/coments-reducer";
 import {debounce} from "@mui/material";
 import LinearProgress from '@mui/material/LinearProgress';
-
 
 
 function App() {
@@ -35,16 +34,18 @@ function App() {
     const allPosts = useSelector<AppRootStateType, PostsType>(state => state.allPosts)
     const filteredPosts = useSelector<AppRootStateType, PostsType>(state => state.filteredPosts)
     const comments = useSelector<AppRootStateType, CommentsType>(state => state.comments)
+    const debouncedDispatch = useCallback(debounce((func: any) => dispatch(func), 500), [])
 
-    const getPostsByUser = debounce((id: number, isChecked: boolean) => {
+    const getPostsByUser = (id: number, isChecked: boolean) => {
         if (!isChecked) {
-            dispatch(removePostsAC(id))
+            debouncedDispatch(removePostsAC(id))
             dispatch(changeUserStatusAC(id, isChecked))
         } else {
-            dispatch(getFilteredPostsTC(id))
             dispatch(changeUserStatusAC(id, isChecked))
+            //dispatch(getFilteredPostsTC(id))
+            debouncedDispatch(getFilteredPostsTC(id))
         }
-    }, 500)
+    }
 
     const showCommentsHandler = debounce((postId: number) => {
         dispatch(getCommentsTC(postId))
@@ -64,7 +65,9 @@ function App() {
             <div className={'mainBlock'}>
 
                 <div className={'postsBlock'}>
-                    {allPosts.length === 0 && <LinearProgress color={'secondary'}/>}
+                    {/*{(allPosts.length === 0 && <LinearProgress color={'secondary'}/>) */}
+                    {/*||*/}
+                    {/*(users.some(u => u.isChecked) && filteredPosts.length === 0 && <LinearProgress color={'secondary'}/>)}*/}
                     {
                         users.some(u => u.isChecked)
                             ?
@@ -72,6 +75,7 @@ function App() {
                                 const onClickHandler = () => showCommentsHandler(post.id)
 
                                 return (
+
                                     <div key={post.id}>
                                         <li>{post.title}</li>
                                         <div style={{background: 'lightblue'}}>
