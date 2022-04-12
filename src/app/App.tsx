@@ -26,15 +26,15 @@ function App() {
 
     }, [])
 
-    useEffect(() => {
-      users.some(u => u.isChecked) ? localStorage.setItem('localUsers', JSON.stringify(users)) : localStorage.clear()
-       })
-
     const users = useSelector<AppRootStateType, UsersType>(state => state.users)
     const allPosts = useSelector<AppRootStateType, PostsType>(state => state.allPosts)
     const filteredPosts = useSelector<AppRootStateType, PostsType>(state => state.filteredPosts)
     const comments = useSelector<AppRootStateType, CommentsType>(state => state.comments)
     const debouncedDispatch = useCallback(debounce((func: any) => dispatch(func), 500), [])
+
+    useEffect(() => {
+        users.some(u => u.isChecked) ? localStorage.setItem('localUsers', JSON.stringify(users)) : localStorage.clear()
+    }, [filteredPosts])
 
     const getPostsByUser = (id: number, isChecked: boolean) => {
         if (!isChecked) {
@@ -65,9 +65,9 @@ function App() {
             <div className={'mainBlock'}>
 
                 <div className={'postsBlock'}>
-                    {/*{(allPosts.length === 0 && <LinearProgress color={'secondary'}/>) */}
-                    {/*||*/}
-                    {/*(users.some(u => u.isChecked) && filteredPosts.length === 0 && <LinearProgress color={'secondary'}/>)}*/}
+                    {(allPosts.length === 0 && <LinearProgress color={'secondary'}/>)
+                    ||
+                    (users.some(u => u.isChecked) && filteredPosts.length === 0 && <LinearProgress color={'secondary'}/>)}
                     {
                         users.some(u => u.isChecked)
                             ?
