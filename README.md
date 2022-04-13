@@ -1,4 +1,9 @@
-# Getting Started with Create React App
+## visit Users and posts App using the link below 
+## https://dzimentey.github.io/users-and-posts/
+
+The app receives users from a server and shows their posts.\
+There's a multiple filter allowing choosing several users for viewing their posts and comments.\
+The filter will be saved after reloading the page.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
